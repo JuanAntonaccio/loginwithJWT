@@ -28,6 +28,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(data => setStore({ message: data.message }))
 					.catch(error => console.log("Error loading message from backend", error));
 			},
+			login:(email,password) => {
+				var miCabecera = new Headers();
+				miCabecera.append("Context_Type","application/json");
+
+				var raw = JSON.stringify({
+					"email": email,
+					"password": password
+				});
+				var requestOptions = {
+					method : 'POST',
+					headers: myCabecera,
+					body: raw,
+					redirect: 'follow'
+				};
+
+				fetch("https://3001-fuchsia-peacock-rd69nei6.ws-us17.gitpod.io/api/login",requestOptions)
+				    .then(response => response.text())
+					.then(result => console.log(result))
+					.catch(error => console.log('error',error));
+
+			},
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
