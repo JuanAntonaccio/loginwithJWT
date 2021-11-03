@@ -44,8 +44,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 
 				fetch("https://3001-fuchsia-peacock-rd69nei6.ws-us17.gitpod.io/api/login",requestOptions)
-				    .then(response => response.text())
-					.then(result => console.log(result))
+				    .then(response => {
+						
+							console.log("status", response.status);
+							return response.json();
+						
+					})
+					.then(result => {
+						localStorage.setItem("token", result.data.token);
+					})
 					.catch(error => console.log('error',error));
 
 			},

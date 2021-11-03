@@ -1,24 +1,67 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import React, { useContext, useState } from "react";
+import { Redirect } from "react-router-dom";
+// import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
+import { Context } from "../store/appContext";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
+	const [email, setEmail] = useState();
+	const [password, setPassword] = useState();
+	const [auth, setAuth] = useState(false);
+
+	const onSubmit = e => {
+		e.preventDefault();
+		actions.login(email, password);
+		//actions.getPlanets();
+		if (localStorage.getItem("token") != "") setAuth(true);
+	};
 
 	return (
 		<div className="text-center mt-5">
-			<h1>Hello Rigo!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">{store.message || "Loading message from the backend..."}</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://github.com/4GeeksAcademy/react-flask-hello/tree/95e0540bd1422249c3004f149825285118594325/docs">
-					Read documentation
-				</a>
-			</p>
+			{auth ? (
+				<Redirect to="/demo" />
+			) : (
+				<form onSubmit={onSubmit}>
+					<div className="mb-3">
+						<label htmlFor="exampleInputEmail" className="form-label">
+							email
+						</label>
+						<input
+							type="text"
+							className="form-control"
+							id="exampleInputEmail"
+							aria-describedby="emailHelp"
+							onChange={e => setUser(e.target.value)}
+							value={email}
+						/>
+						<div id="emailHelp" className="form-text">
+							Well never share your email with anyone else.
+						</div>
+					</div>
+					<div className="mb-3">
+						<label htmlFor="exampleInputPassword" className="form-label">
+							password
+						</label>
+						<input
+							type="password"
+							className="form-control"
+							id="exampleInputPassword"
+							onChange={e => setPassword(e.target.value)}
+							value={password}
+						/>
+					</div>
+					<div className="mb-3 form-check">
+						<input type="checkbox" className="form-check-input" id="exampleCheck1" />
+						<label className="form-check-label" htmlFor="exampleCheck1">
+							Check me out
+						</label>
+					</div>
+					<button type="submit" className="btn btn-primary">
+						Submit
+					</button>
+				</form>
+			)}
 		</div>
 	);
 };
