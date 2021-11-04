@@ -54,6 +54,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.log("error", error));
 			},
+			getUsers: () => {
+				var myHeaders = new Headers();
+				myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+				var requestOptions = {
+					method: "GET",
+					headers: myHeaders,
+					redirect: "follow"
+				};
+
+				fetch("https://3001-tomato-beaver-w6qi6xkq.ws-us17.gitpod.io/api/users", requestOptions)
+					.then(response => response.text())
+					.then(result => console.log(result))
+					.catch(error => console.log("error", error));
+			},
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
