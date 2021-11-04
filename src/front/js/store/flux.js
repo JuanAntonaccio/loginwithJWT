@@ -28,33 +28,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(data => setStore({ message: data.message }))
 					.catch(error => console.log("Error loading message from backend", error));
 			},
-			login:(email,password) => {
+			login: (email, password, setAuth) => {
 				var miCabecera = new Headers();
-				miCabecera.append("Context_Type","application/json");
+				miCabecera.append("Content-Type", "application/json");
 
 				var raw = JSON.stringify({
-					"email": email,
-					"password": password
+					email: email,
+					password: password
 				});
 				var requestOptions = {
-					method : 'POST',
-					headers: myCabecera,
+					method: "POST",
+					headers: miCabecera,
 					body: raw,
-					redirect: 'follow'
+					redirect: "follow"
 				};
 
-				fetch("https://3001-fuchsia-peacock-rd69nei6.ws-us17.gitpod.io/api/login",requestOptions)
-				    .then(response => {
-						
-							console.log("status", response.status);
-							return response.json();
-						
+				fetch("https://3001-tomato-beaver-w6qi6xkq.ws-us17.gitpod.io/api/login", requestOptions)
+					.then(response => {
+						console.log("status", response.status);
+						response.status == 200 ? setAuth(true) : setAuth(false);
+						return response.json();
 					})
 					.then(result => {
-						localStorage.setItem("token", result.data.token);
+						localStorage.setItem("token", result.access_token);
 					})
-					.catch(error => console.log('error',error));
-
+					.catch(error => console.log("error", error));
 			},
 			changeColor: (index, color) => {
 				//get the store

@@ -24,7 +24,9 @@ def handle_hello():
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if email != "test" or password != "test":
+    user1=User.query.filter_by(email=email)
+    
+    if not email or not password :
         return jsonify({"msg": "Bad email or password"}), 401
 
     access_token = create_access_token(identity=email)
@@ -36,12 +38,14 @@ def login():
 @api.route('/users', methods=['GET'])
 @jwt_required()
 def get_all_users():
-
+    current_user = get_jwt_identity()
     usuarios=User.query.all()
-    usuarios = list(map(lambda user: user.serialize(), usuarios ))
+    
+
     if not usuarios:
         return jsonify("no se encontraron usuarios"),404
-        
+    
+    usuarios = list(map(lambda user: user.serialize(), usuarios ))    
     return jsonify(usuarios), 200
 
 @api.route('/users', methods=['POST'])
@@ -67,7 +71,7 @@ def add_user():
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
-    print("Entre a la funcion")
+    
     current_user = get_jwt_identity()
     print(current_user)
     return jsonify(logged_in_as=current_user), 200      

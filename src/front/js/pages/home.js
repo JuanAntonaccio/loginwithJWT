@@ -12,17 +12,17 @@ export const Home = () => {
 
 	const onSubmit = e => {
 		e.preventDefault();
-		actions.login(email, password);
+		actions.login(email, password, setAuth);
 		//actions.getPlanets();
-		if (localStorage.getItem("token") != "") setAuth(true);
+		//localStorage.getItem("token") !=setAuth(true);
 	};
-
+	console.log(auth);
 	return (
 		<div className="text-center mt-5">
 			{auth ? (
 				<Redirect to="/demo" />
 			) : (
-				<form onSubmit={onSubmit}>
+				<form onSubmit={e => onSubmit(e)}>
 					<div className="mb-3">
 						<label htmlFor="exampleInputEmail" className="form-label">
 							email
@@ -32,7 +32,7 @@ export const Home = () => {
 							className="form-control"
 							id="exampleInputEmail"
 							aria-describedby="emailHelp"
-							onChange={e => setUser(e.target.value)}
+							onChange={e => setEmail(e.target.value)}
 							value={email}
 						/>
 						<div id="emailHelp" className="form-text">
